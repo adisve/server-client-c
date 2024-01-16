@@ -11,7 +11,7 @@
 #define SERVER_PORT 9999
 #define MAX_CLIENTS 10
 
-void server_init(int port);
+void server_init();
 
 void server_start();
 

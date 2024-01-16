@@ -17,7 +17,7 @@ void sigint_handler(int _) {
     keep_running = 0;
 }
 
-void server_init(int port)
+void server_init()
 {
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket == -1)
@@ -31,7 +31,7 @@ void server_init(int port)
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port = htons(port);
+    server_addr.sin_port = htons(SERVER_PORT);
 
     if (bind(server_socket, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
     {
