@@ -64,7 +64,7 @@ void server_start()
             continue;
         }
 
-        // Allocate memory for client socket to pass to the thread
+        // Allocate memory for client socket and pass to the thread
         int *client_socket_ptr = malloc(sizeof(int));
         if (client_socket_ptr == NULL)
         {
@@ -81,7 +81,6 @@ void server_start()
         }
         else
         {
-            // Detach the thread - let it free resources upon completion
             pthread_detach(thread_id);
         }
     }
