@@ -19,4 +19,10 @@ void server_stop();
 
 void sigint_handler(int _);
 
+void broadcast_message(const char *message);
+
+void *client_handler(void *arg);
+
+void *server_input_handler(void *arg);
+
 #endif //SERVER_H
