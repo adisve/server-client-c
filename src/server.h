@@ -1,28 +1,28 @@
-/*
-* Implements the core server functionality like socket creation, 
-* binding, listening, and accepting clients.
-*/
-
-#pragma once
+// server.h
 
 #ifndef SERVER_H
 #define SERVER_H
 
-#define SERVER_PORT 9999
+#include <netinet/in.h>
+
 #define MAX_CLIENTS 10
+#define SERVER_PORT 8080
+#define HOSTNAME_LENGTH 256
 
-void server_init();
+typedef struct {
+    int socket;
+    char ip[INET_ADDRSTRLEN];
+    char hostname[HOSTNAME_LENGTH];
+} client_t;
 
-void server_start();
 
-void server_stop();
+extern int num_clients;
+extern int client_sockets[MAX_CLIENTS];
 
 void sigint_handler(int _);
-
-void broadcast_message(const char *message);
-
-void *client_handler(void *arg);
-
+void server_init();
+void server_start();
+void server_stop();
 void *server_input_handler(void *arg);
 
-#endif //SERVER_H
+#endif
