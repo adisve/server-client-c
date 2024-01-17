@@ -1,6 +1,7 @@
-Simple Multiclient TCP server messaging
+# Simple Multiclient TCP messaging server
 
-To run the program:
+
+## Run
 
 ```sh
 make
@@ -9,3 +10,7 @@ make
 ```sh
 cd bin && ./server
 ```
+
+## Module Diagram
+
+<img src="module_diagram.png" width=700>
