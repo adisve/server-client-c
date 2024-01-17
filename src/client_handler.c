@@ -43,7 +43,7 @@ void *client_handler(void *arg) {
     pthread_mutex_lock(&client_list_mutex);
     if (num_clients < MAX_CLIENTS)
     {
-        client_sockets[num_clients++] = client_socket; // Assuming client_sockets is still int array
+        client_sockets[num_clients++] = client_socket;
     }
     pthread_mutex_unlock(&client_list_mutex);
 
@@ -57,25 +57,20 @@ void *client_handler(void *arg) {
 
         buffer[bytes_received] = '\0';
 
-        // Get the current time and format it
         time_t now = time(NULL);
         struct tm *now_tm = localtime(&now);
         char time_str[9];
         strftime(time_str, sizeof(time_str), "%H:%M:%S", now_tm);
 
-        // Format the message for broadcast
         snprintf(broadcast_buffer, sizeof(broadcast_buffer), "\n[%s] %s (%s) says: %s\n\n", time_str, client->hostname, client->ip, buffer);
 
-        // Lock the display mutex and print the message on the server
         pthread_mutex_lock(&display_mutex);
         printf("\n%s\n", broadcast_buffer);
         pthread_mutex_unlock(&display_mutex);
 
-        // Broadcast the message
         broadcast_message(broadcast_buffer, client_socket);
     }
 
-    // Clean up after the loop ends
     pthread_mutex_lock(&client_list_mutex);
     for (int i = 0; i < num_clients; i++)
     {
@@ -88,7 +83,6 @@ void *client_handler(void *arg) {
     }
     pthread_mutex_unlock(&client_list_mutex);
 
-    // Close the client socket and free the client memory
     close(client_socket);
     printf("\nClient %s (%s) disconnected.\n", client->hostname, client->ip);
     free(client);
