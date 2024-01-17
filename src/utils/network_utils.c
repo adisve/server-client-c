@@ -8,7 +8,8 @@
 
 int create_server_socket() {
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_socket == -1) {
+    if (server_socket == -1)
+    {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
@@ -21,7 +22,8 @@ void configure_server_socket(int server_socket, struct sockaddr_in *server_addr)
     server_addr->sin_addr.s_addr = INADDR_ANY;
     server_addr->sin_port = htons(SERVER_PORT);
 
-    if (bind(server_socket, (struct sockaddr *)server_addr, sizeof(*server_addr)) < 0) {
+    if (bind(server_socket, (struct sockaddr *)server_addr, sizeof(*server_addr)) < 0)
+    {
         perror("Socket bind failed");
         exit(EXIT_FAILURE);
     }

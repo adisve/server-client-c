@@ -12,5 +12,5 @@ pthread_mutex_t display_mutex;
 
 void initialize_mutexes();
 void destroy_mutexes();
-
+int create_and_detach_thread(void *(*start_routine) (void *), void *arg);
 #endif

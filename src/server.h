@@ -23,6 +23,9 @@ void sigint_handler(int _);
 void server_init();
 void server_start();
 void server_stop();
+void server_input_init();
+void start_listening(int server_socket);
+void accept_clients(int server_socket);
 void *server_input_handler(void *arg);
 
 #endif
