@@ -9,6 +9,11 @@
 #define SERVER_PORT 8080
 #define HOSTNAME_LENGTH 256
 
+/**
+ * @brief Struct for storing client information
+ * that will be displayed in the terminal.
+ * 
+ */
 typedef struct {
     int socket;
     char ip[INET_ADDRSTRLEN];

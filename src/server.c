@@ -1,5 +1,28 @@
 // server.c
 
+/**
+ * @file server.c
+ * @author Adis Veletanlic
+ * @brief The main purpose of this file is to provide
+ * the implementation of the server. It contains the
+ * main function, as well as the functions for
+ * initializing, starting and stopping the server.
+ * 
+ * The server is implemented as a TCP server that
+ * listens for incoming connections on port 8080.
+ * 
+ * The server is able to handle multiple clients
+ * simultaneously. The maximum number of clients
+ * is defined by the MAX_CLIENTS constant.
+ * 
+ * @version 0.1
+ * @date 2024-01-22
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
+
 #include "server.h"
 #include "./utils/network_utils.h"
 #include "./utils/thread_utils.h"
@@ -16,11 +39,22 @@ volatile sig_atomic_t keep_running = 1;
 int num_clients = 0;
 int client_sockets[MAX_CLIENTS];
 
+/**
+ * @brief Handles the SIGINT signal by setting the
+ * keep_running flag to 0.
+ * 
+ * @param _ The signal number.
+ */
 void sigint_handler(int _)
 {
     keep_running = 0;
 }
 
+/**
+ * @brief Initializes the server by creating the
+ * server socket and configuring it.
+ * 
+ */
 void server_init()
 {
     server_socket = create_server_socket();
@@ -29,6 +63,12 @@ void server_init()
     initialize_mutexes();
 }
 
+/**
+ * @brief Starts listening for incoming connections
+ * on the server socket.
+ * 
+ * @param server_socket The server socket.
+ */
 void start_listening(int server_socket)
 {
     if (listen(server_socket, MAX_CLIENTS) < 0)
@@ -39,6 +79,12 @@ void start_listening(int server_socket)
     printf("\nServer started on port %d\n", SERVER_PORT);
 }
 
+/**
+ * @brief Accepts new clients and handles them by
+ * creating a new thread for each client.
+ * 
+ * @param server_socket The server socket.
+ */
 void accept_clients(int server_socket)
 {
     while (keep_running)
@@ -55,6 +101,11 @@ void accept_clients(int server_socket)
     }
 }
 
+/**
+ * @brief Broadcasts the given message to all clients.
+ * 
+ * @param message The message to be broadcasted.
+ */
 void *server_input_handler(void *arg)
 {
     char input_buffer[1024];
@@ -78,6 +129,11 @@ void *server_input_handler(void *arg)
     return NULL;
 }
 
+/**
+ * @brief Starts the server by calling the
+ * start_listening and accept_clients functions.
+ * 
+ */
 void server_start()
 {
     signal(SIGINT, sigint_handler);
@@ -86,6 +142,11 @@ void server_start()
     accept_clients(server_socket);
 }
 
+/**
+ * @brief Stops the server by closing the server
+ * socket and destroying the mutexes.
+ * 
+ */
 void server_input_init()
 {
     if (create_and_detach_thread(server_input_handler, NULL) != 0)
@@ -95,12 +156,24 @@ void server_input_init()
     }
 }
 
+/**
+ * @brief Stops the server by closing the server
+ * socket and destroying the mutexes.
+ * 
+ */
 void server_stop()
 {
     close(server_socket);
     destroy_mutexes();
 }
 
+/**
+ * @brief The main function. It initializes the
+ * server, starts it and then stops it.
+ * 
+ * @return int 0 if the program was executed
+ * successfully, -1 otherwise.
+ */
 int main()
 {
     server_init();
